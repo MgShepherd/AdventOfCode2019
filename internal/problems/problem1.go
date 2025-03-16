@@ -6,7 +6,7 @@ import (
 	"strings"
 )
 
-func SolveProblem1(pInput []string) (int, error) {
+func SolveProblem1(pInput []string, pPart int) (int, error) {
 	var sumFuel int
 	for _, line := range pInput {
 		if len(line) == 0 {
@@ -19,8 +19,21 @@ func SolveProblem1(pInput []string) (int, error) {
 			return 0, err
 		}
 
-		sumFuel += iVal/3 - 2
+		if pPart == 1 {
+			sumFuel += iVal/3 - 2
+		} else {
+			sumFuel += getFuelPart2(iVal)
+		}
 	}
 
 	return sumFuel, nil
+}
+
+func getFuelPart2(mass int) int {
+	if mass <= 0 {
+		return 0
+	}
+
+	fuel := max(mass/3-2, 0)
+	return fuel + getFuelPart2(fuel)
 }
