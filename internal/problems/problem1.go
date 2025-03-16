@@ -6,13 +6,11 @@ import (
 	"strings"
 )
 
-func SolveProblem1(pInput []string, pPart int) (int, error) {
+type Problem1 struct{}
+
+func (p Problem1) Solve(pInput []string, pPart int) (int, error) {
 	var sumFuel int
 	for _, line := range pInput {
-		if len(line) == 0 {
-			continue
-		}
-
 		iVal, err := strconv.Atoi(strings.TrimSpace(line))
 		if err != nil {
 			log.Printf("Unable to process line: %s\n", line)

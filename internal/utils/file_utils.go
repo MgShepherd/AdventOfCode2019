@@ -18,7 +18,10 @@ func ReadProblemFileLines(problemNumber int) ([]string, error) {
 	var output []string
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
-		output = append(output, scanner.Text())
+		line := scanner.Text()
+		if len(line) > 0 {
+			output = append(output, scanner.Text())
+		}
 	}
 
 	return output, nil

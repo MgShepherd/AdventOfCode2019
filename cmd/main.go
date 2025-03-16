@@ -9,12 +9,13 @@ import (
 )
 
 func main() {
-	pInput, err := utils.ReadProblemFileLines(1)
+	pInput, err := utils.ReadProblemFileLines(2)
 	if err != nil {
 		os.Exit(1)
 	}
 
-	result, err := problems.SolveProblem1(pInput, 2)
+	p := problems.Problem2{}
+	result, err := p.Solve(pInput, 1)
 	if err != nil {
 		os.Exit(1)
 	}
