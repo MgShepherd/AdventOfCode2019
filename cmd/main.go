@@ -15,7 +15,7 @@ func main() {
 	}
 
 	p := problems.Problem2{}
-	result, err := p.Solve(pInput, 1)
+	result, err := p.Solve(pInput, 2)
 	if err != nil {
 		os.Exit(1)
 	}
