@@ -1,3 +1,3 @@
-from aoc import test_function
+import aoc.problems as problems
 
-test_function()
+problems.problem1.solve()
