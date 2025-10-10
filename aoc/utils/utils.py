@@ -1,12 +1,12 @@
 import sys
-from typing import IO, Any
+from typing import IO
 
 
-def print_err(msg):
+def print_err(msg: str):
     print(f"\033[31m[ERROR]: {msg}\033[0m", file=sys.stderr)
 
 
-def read_problem_file(problem_number: int) -> IO[Any]:
+def read_problem_file(problem_number: int) -> IO[str] | None:
     file_name = f"inputs/problem{problem_number}.txt"
     try:
         return open(file_name)

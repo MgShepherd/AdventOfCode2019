@@ -1,3 +1,42 @@
-import aoc.problems as problems
+import argparse
+from dataclasses import dataclass
 
-problems.problem1.solve()
+import aoc.problems as problems
+from aoc.utils.utils import print_err
+
+SOLVED_PROBLEMS = [1]
+
+
+@dataclass
+class ProgramArgs:
+    problem: int
+    part: int
+
+
+def read_cmd_args() -> ProgramArgs:
+    parser = argparse.ArgumentParser(
+        prog="aoc", description="Solves the AdventOfCode Problems"
+    )
+    _ = parser.add_argument(
+        "problem", type=int, choices=SOLVED_PROBLEMS, help="The problem number to solve"
+    )
+    _ = parser.add_argument(
+        "part", type=int, choices=[1, 2], help="Which part of the problem to solve"
+    )
+
+    args = vars(parser.parse_args())
+    if isinstance(args["problem"], int) and isinstance(args["part"], int):
+        return ProgramArgs(int(args["problem"]), int(args["part"]))
+
+    return ProgramArgs(1, 1)
+
+
+def solve_problem(args: ProgramArgs):
+    match args.problem:
+        case 1:
+            problems.problem1.solve(args.part)
+        case _:
+            print_err(f"Unsolved problem: {args.problem}")
+
+
+solve_problem(read_cmd_args())

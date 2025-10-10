@@ -1,7 +1,7 @@
 import aoc.utils as utils
 
 
-def solve():
+def solve(part: int):
     file = utils.read_problem_file(1)
     if file is None:
         return
