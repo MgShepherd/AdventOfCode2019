@@ -4,7 +4,7 @@ from dataclasses import dataclass
 import aoc.problems as problems
 from aoc.utils.utils import print_err
 
-SOLVED_PROBLEMS = [1]
+SOLVED_PROBLEMS = [1, 2]
 
 
 @dataclass
@@ -33,11 +33,17 @@ def read_cmd_args() -> ProgramArgs:
 
 def solve_problem(args: ProgramArgs):
     result = 0
+    problem: problems.problem.Problem | None = None
     match args.problem:
         case 1:
-            result = problems.problem1.solve(args.part)
+            problem = problems.Problem1()
+        case 2:
+            problem = problems.Problem2()
         case _:
             print_err(f"Unsolved problem: {args.problem}")
+
+    if problem is not None:
+        result = problem.solve(args.part)
     print(f"Result is: {result}")
 
 
