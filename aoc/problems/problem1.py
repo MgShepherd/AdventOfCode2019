@@ -1,18 +1,27 @@
 import aoc.utils as utils
 
 
-def solve(part: int):
+def solve(part: int) -> int:
     file = utils.read_problem_file(1)
     if file is None:
-        return
+        return -1
 
     required_fuel = 0
     for line in file:
         try:
-            required_fuel += int(int(line) / 3 - 2)
+            required_fuel += _get_required_fuel(part, int(line))
         except ValueError:
             utils.print_err(f"Unable to convert {line.strip()} into number")
-            return
+            return -1
 
     file.close()
-    print(f"Solution is {required_fuel}")
+    return required_fuel
+
+
+def _get_required_fuel(part: int, mass: int) -> int:
+    required_fuel = int(mass / 3) - 2
+    if part == 1:
+        return required_fuel
+    elif required_fuel <= 0:
+        return 0
+    return required_fuel + _get_required_fuel(part, required_fuel)

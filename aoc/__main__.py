@@ -32,11 +32,13 @@ def read_cmd_args() -> ProgramArgs:
 
 
 def solve_problem(args: ProgramArgs):
+    result = 0
     match args.problem:
         case 1:
-            problems.problem1.solve(args.part)
+            result = problems.problem1.solve(args.part)
         case _:
             print_err(f"Unsolved problem: {args.problem}")
+    print(f"Result is: {result}")
 
 
 solve_problem(read_cmd_args())
