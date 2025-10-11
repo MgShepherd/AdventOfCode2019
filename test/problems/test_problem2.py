@@ -12,6 +12,9 @@ class TestProblem1(unittest.TestCase):
         ]
         run_test_cases(self, Problem2(), 1, test_cases)
 
+    def test_solves_part_2(self) -> None:
+        print("Tests N/A for problem 2 part 1 due to no examples")
+
 
 if __name__ == "__main__":
     _ = unittest.main()
