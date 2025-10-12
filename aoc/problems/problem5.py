@@ -5,15 +5,16 @@ from typing import override
 import aoc.utils as utils
 from aoc.problems.problem import Problem
 
-JUMP_AMOUNT = 4
-INPUT_VAL = 1
-
 
 class Opcode(IntEnum):
     Add = 1
     Multiply = 2
     Input = 3
     Output = 4
+    JumpIfTrue = 5
+    JumpIfFalse = 6
+    LessThan = 7
+    Equals = 8
     Exit = 99
 
 
@@ -33,10 +34,12 @@ class Problem5(Problem):
         data = file.readline().strip().split(",")
         elements = list(map(lambda x: int(x), data))
 
-        return _run_program(elements)
+        if part == 1:
+            return _run_program(elements, 1)
+        return _run_program(elements, 5)
 
 
-def _run_program(elements: list[int]) -> int:
+def _run_program(elements: list[int], input_val: int) -> int:
     i = 0
     outputs: list[int] = []
     while i < len(elements):
@@ -54,11 +57,41 @@ def _run_program(elements: list[int]) -> int:
                     elements[elements[i + 3]] = operand_1 * operand_2
                     i += 4
                 case Opcode.Input:
-                    elements[elements[i + 1]] = INPUT_VAL
+                    elements[elements[i + 1]] = input_val
                     i += 2
                 case Opcode.Output:
                     outputs.append(elements[elements[i + 1]])
                     i += 2
+                case Opcode.JumpIfTrue:
+                    check_val = get_value(elements, i + 1, instruction.modes[0])
+                    if check_val != 0:
+                        new_ptr = get_value(elements, i + 2, instruction.modes[1])
+                        i = new_ptr
+                    else:
+                        i += 3
+                case Opcode.JumpIfFalse:
+                    check_val = get_value(elements, i + 1, instruction.modes[0])
+                    if check_val == 0:
+                        new_ptr = get_value(elements, i + 2, instruction.modes[1])
+                        i = new_ptr
+                    else:
+                        i += 3
+                case Opcode.LessThan:
+                    operand_1 = get_value(elements, i + 1, instruction.modes[0])
+                    operand_2 = get_value(elements, i + 2, instruction.modes[1])
+                    if operand_1 < operand_2:
+                        elements[elements[i + 3]] = 1
+                    else:
+                        elements[elements[i + 3]] = 0
+                    i += 4
+                case Opcode.Equals:
+                    operand_1 = get_value(elements, i + 1, instruction.modes[0])
+                    operand_2 = get_value(elements, i + 2, instruction.modes[1])
+                    if operand_1 == operand_2:
+                        elements[elements[i + 3]] = 1
+                    else:
+                        elements[elements[i + 3]] = 0
+                    i += 4
                 case Opcode.Exit:
                     break
         except ValueError:
