@@ -13,6 +13,10 @@ class Problem6(Problem):
             return 0
 
         direct_orbits: dict[str, list[str]] = dict()
+        orbit_sources: dict[str, str] = dict()
+        visited_paths: set[str] = set()
+        santa_orbiting = ""
+        you_orbiting = ""
         for line in file:
             elements = line.strip().split(")")
             if len(elements) != 2:
@@ -23,8 +27,23 @@ class Problem6(Problem):
             else:
                 direct_orbits[elements[0]] = [elements[1]]
 
+            orbit_sources[elements[1]] = elements[0]
+
+            if elements[1] == "YOU":
+                you_orbiting = elements[0]
+            elif elements[1] == "SAN":
+                santa_orbiting = elements[0]
+
         file.close()
-        return get_num_orbits(direct_orbits, "COM", 1)
+        if part == 1:
+            return get_num_orbits(direct_orbits, "COM", 1)
+
+        if you_orbiting == "" or santa_orbiting == "":
+            print_err("Unable to find location of you or santa")
+            return 0
+        return get_orbital_steps(
+            direct_orbits, orbit_sources, visited_paths, you_orbiting, santa_orbiting, 0
+        )
 
 
 def get_num_orbits(
@@ -37,3 +56,45 @@ def get_num_orbits(
         total += level + get_num_orbits(direct_orbits, element, level + 1)
 
     return total
+
+
+def get_orbital_steps(
+    direct_orbits: dict[str, list[str]],
+    orbit_sources: dict[str, str],
+    visited_paths: set[str],
+    current: str,
+    dest: str,
+    steps_taken: int,
+) -> int:
+    visited_paths.add(current)
+    if current not in direct_orbits:
+        return -1
+    elif dest in direct_orbits[current]:
+        return steps_taken + 1
+
+    for element in direct_orbits[current]:
+        if element in visited_paths:
+            continue
+
+        if (
+            result_steps := get_orbital_steps(
+                direct_orbits,
+                orbit_sources,
+                visited_paths,
+                element,
+                dest,
+                steps_taken + 1,
+            )
+        ) != -1:
+            return result_steps
+
+    if orbit_sources[current] in visited_paths:
+        return -1
+    return get_orbital_steps(
+        direct_orbits,
+        orbit_sources,
+        visited_paths,
+        orbit_sources[current],
+        dest,
+        steps_taken + 1,
+    )

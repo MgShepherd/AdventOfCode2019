@@ -24,6 +24,27 @@ K)L""",
         ]
         run_test_cases(self, Problem6(), 1, test_cases)
 
+    def test_solves_part_2(self) -> None:
+        test_cases = [
+            (
+                """COM)B
+B)C
+C)D
+D)E
+E)F
+B)G
+G)H
+D)I
+E)J
+J)K
+K)L
+K)YOU
+I)SAN""",
+                4,
+            ),
+        ]
+        run_test_cases(self, Problem6(), 2, test_cases)
+
 
 if __name__ == "__main__":
     _ = unittest.main()
