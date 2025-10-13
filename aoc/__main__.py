@@ -4,7 +4,7 @@ from dataclasses import dataclass
 import aoc.problems as problems
 from aoc.utils.utils import print_err
 
-SOLVED_PROBLEMS = [1, 2, 3, 4, 5, 6]
+SOLVED_PROBLEMS = [1, 2, 3, 4, 5, 6, 7]
 
 
 @dataclass
@@ -47,6 +47,8 @@ def solve_problem(args: ProgramArgs):
             problem = problems.Problem5()
         case 6:
             problem = problems.Problem6()
+        case 7:
+            problem = problems.Problem7()
         case _:
             print_err(f"Unsolved problem: {args.problem}")
 
